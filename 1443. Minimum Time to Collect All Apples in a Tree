@@ -1,0 +1,28 @@
+class Solution {
+
+    private:
+    int dfs(int curr, int parent, vector<int>adjMat[], vector<bool>&hasApple) {
+        int time = 0;
+
+        for(auto i:adjMat[curr]) {
+            if(parent==i) continue;
+
+            int time_by_child = dfs(i,curr,adjMat,hasApple);
+
+            if(time_by_child!=0 || hasApple[i]) {
+                time+=time_by_child+2;
+            }
+        }
+        return time;
+    }
+
+public:
+    int minTime(int n, vector<vector<int>>& edges, vector<bool>& hasApple) {
+        vector<int>adjMat[n];
+        for(int i=0;i<(int)edges.size();i++) {
+            adjMat[edges[i][0]].push_back(edges[i][1]);
+            adjMat[edges[i][1]].push_back(edges[i][0]);
+        } 
+        return dfs(0, -1, adjMat, hasApple);
+    }
+};
